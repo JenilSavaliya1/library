@@ -13,6 +13,15 @@ const booksSchema = new mongoose.Schema({
     category : {
         type: String,
         required: true
+    },
+    status : { 
+        available: {
+            type: Boolean,
+            required: true
+        },
+        date_available: {
+            type: Date
+        }
     }
 })
 

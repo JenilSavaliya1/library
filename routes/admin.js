@@ -4,69 +4,97 @@ const Admin = require('../models/admin')
 const Books = require('../models/books')
 
 
-router.post('/', async(req,res)=>{
+router.post('/', async (req, res) => {
     const admin = new Admin({
         username: req.body.username,
         password: req.body.password
     })
 
-    try{
+    try {
         const admin1 = await admin.save()
         res.json(admin1)
-    }catch(err){
+    } catch (err) {
         res.send('error')
     }
 })
 
 //Find all the admins in the database
-router.get('/', async(req,res)=> {
-    try{
+router.get('/', async (req, res) => {
+    try {
         const admin = await Admin.find()
         res.json(admin)
-    }catch(err){
+    } catch (err) {
         res.send('error' + err)
     }
 })
 
 //find admins according to the adminID
-router.get('/:id', async(req,res)=> {
-    try{
+router.get('/:id', async (req, res) => {
+    try {
         const admin = await Admin.findById(req.params.id)
         res.json(admin)
-    }catch(err){
+    } catch (err) {
         res.send('error' + err)
     }
 })
 
 //Adding a new book
-router.post('/books', async(req,res)=>{
-    const books = new Books({
-        title: req.body.title,
-        author: req.body.author,
-        category: req.body.category
-    })
+router.post('/books', async (req, res) => {
+    let data = {...req.body}
 
-    try{
-        const books1 = await books.save()
-        res.json(books1)
-    }catch(err){
-        res.send('error')
+    let details = await Books.create(data)
+
+    if(details){
+        return res.status(200).json({
+            details
+        })
     }
 })
 
 //Updating a book
-router.put('/books/:id', async(req, res) => {
-    const title = req.body.title;
-    const author = req.body.author;
-    const category = req.body.category;
+router.post('/books/update', async (req, res) => {
 
-        try{
-            const book1 = await Books.findById(req.params.id)
-            res.json(admin)
-        }catch(err){
-            res.send('error' + err)
+    try {
+        let data = { ...req.body }
+        let id = req.query.id
+
+        console.log(id);
+
+        if(!data || !id){
+            throw new Error('Id or data was not found')
         }
-    })
+    
+        let updatedDetails = await Books.findByIdAndUpdate(id, {$set: data})
+    
+        if(!updatedDetails){
+            throw new Error('id was incorrect')
+        }
+
+        return res.status(200).json({
+            updatedDetails
+        })
+    } catch (error) {
+        return res.status(400).json({
+            message: error.message
+        })
+    }
+
+})
+
+
+router.get('/books/delete', async (req, res, next) => {
+    let id = req.query.id;
+    console.log(id);
+    let details  = await Books.findByIdAndDelete(id)
+
+
+    if(details){
+        return res.status(200).json({
+            message: 'Data deleted successfuly'
+        });
+    }
+})
+
 
 
 module.exports = router
