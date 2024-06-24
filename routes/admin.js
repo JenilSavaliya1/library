@@ -40,9 +40,9 @@ router.get('/:id', async (req, res) => {
 
 //Adding a new book
 router.post('/books', async (req, res) => {
-    let data = {...req.body}
+    const data = {...req.body}
 
-    let details = await Books.create(data)
+    const details = await Books.create(data)
 
     if(details){
         return res.status(200).json({
@@ -55,16 +55,14 @@ router.post('/books', async (req, res) => {
 router.post('/books/update', async (req, res) => {
 
     try {
-        let data = { ...req.body }
-        let id = req.query.id
-
-        console.log(id);
+        const data = { ...req.body }
+        const id = req.query.id
 
         if(!data || !id){
             throw new Error('Id or data was not found')
         }
     
-        let updatedDetails = await Books.findByIdAndUpdate(id, {$set: data})
+        const updatedDetails = await Books.findByIdAndUpdate(id, {$set: data})
     
         if(!updatedDetails){
             throw new Error('id was incorrect')
@@ -81,11 +79,10 @@ router.post('/books/update', async (req, res) => {
 
 })
 
-
+//delete a book
 router.get('/books/delete', async (req, res, next) => {
-    let id = req.query.id;
-    console.log(id);
-    let details  = await Books.findByIdAndDelete(id)
+    const id = req.query.id;
+    const details  = await Books.findByIdAndDelete(id)
 
 
     if(details){
@@ -93,6 +90,22 @@ router.get('/books/delete', async (req, res, next) => {
             message: 'Data deleted successfuly'
         });
     }
+})
+
+router.post('/books/assign', async (req,res) =>{
+    const id = req.query.id;
+    const userId = req.body.userId;
+    const returnDate = req.body.returnDate;
+
+    const book_assign = await Books.findByIdAndAssign(id)
+
+    if(book_assign)
+        if(book_assign.status=== 'available'){
+            book.status = 'false';
+            book.borrowedby = userId;
+            book.returnDate = returnDate;
+        }
+        
 })
 
 
