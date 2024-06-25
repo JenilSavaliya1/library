@@ -9,7 +9,7 @@ router.post('/', async(req,res)=>{
         name: req.body.name,
         password: req.body.password,
         book_borrowed: req.body.book_borrowed,
-       
+        history: req.body.history
     })
 
     try{
@@ -20,11 +20,22 @@ router.post('/', async(req,res)=>{
     }
 })
 
+//get all the user details
 router.get('/', async(req,res)=> {
     try{
         const user = await User.find()
         res.json(user)
     }catch(err){
+        res.send('error' + err)
+    }
+})
+
+//get all the books details
+router.get('/books',async(req,res)=>{
+    try{
+        const books = await Books.find()
+        res.json(books)
+    }catch (err){
         res.send('error' + err)
     }
 })

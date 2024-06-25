@@ -19,7 +19,7 @@ const booksSchema = new mongoose.Schema({
             type: Boolean,
             required: true
         },
-        date_available: {
+        returnDate: {
             type: Date 
         }
     }
