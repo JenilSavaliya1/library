@@ -40,5 +40,15 @@ router.get('/books',async(req,res)=>{
     }
 })
 
+//search books by name ,author or category
+router.get('/books/search', async(req,res)=>{
+    const data = {...req.body}
+    try{
+        
+    }catch (err){
+        res.send('error' +err)
+    }
+})
+
 
 module.exports = router

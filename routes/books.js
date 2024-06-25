@@ -6,7 +6,9 @@ router.post('/', async(req,res)=>{
     const books = new Books({
         title: req.body.title,
         author: req.body.author,
-        category: req.body.category
+        category: req.body.category,
+        status : req.body.status,
+
     })
 
     try{

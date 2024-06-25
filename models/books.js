@@ -1,4 +1,5 @@
 const mongoose = require('mongoose')
+const user = require('./user')
 
 const booksSchema = new mongoose.Schema({
 
@@ -18,9 +19,15 @@ const booksSchema = new mongoose.Schema({
         available: {
             type: Boolean,
             required: true
+            
         },
         returnDate: {
             type: Date 
+            
+        },
+        assignedTo: {
+        type: mongoose.Schema.Types.ObjectId, //assigned the user id to the book borrowed
+        ref : user
         }
     }
 })
