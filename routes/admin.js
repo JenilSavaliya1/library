@@ -87,7 +87,7 @@ router.get('/books/delete', async (req, res, next) => {
 //assigning the book
 router.post('/books/assign', async (req,res) =>{
     const bookId = req.query.bookId;
-    const userId = req.body.userId;
+    const userId = req.query.userId;
     const returnDate = req.body.returnDate;
 
     try{
@@ -101,7 +101,7 @@ router.post('/books/assign', async (req,res) =>{
             return res.status(400).send('Book is assigned to someone else');
         }
 
-        const updatedBook = await Books.findByIdAndUpdate(bookId, {$set: {
+        const assignedBook = await Books.findByIdAndUpdate(bookId, {$set: {
                 "status.avaiable" : false,
                 "status.returnDate" : new Date(returnDate),
                 "status.assignedTo" : userId
@@ -113,12 +113,12 @@ router.post('/books/assign', async (req,res) =>{
 
         //const updatedBook = await Books.findByIdAndUpdate(bookId, {$set: data})
     
-        if(!updatedBook){
+        if(!assignedBookBook){
             throw new Error('id was incorrect')
         }
 
         return res.status(200).json({
-            updatedBook
+            assignedBookedBook
         })
 
     
@@ -138,6 +138,7 @@ router.get('/user', async (req,res) =>{
     }
 })
 
+//books to be returned today
 
 
 module.exports = router

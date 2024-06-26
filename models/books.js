@@ -18,8 +18,8 @@ const booksSchema = new mongoose.Schema({
     status : { 
         available: {
             type: Boolean,
-            required: true
-            
+            required: true,
+            default: true
         },
         returnDate: {
             type: Date 

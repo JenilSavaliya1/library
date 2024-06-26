@@ -42,9 +42,19 @@ router.get('/books',async(req,res)=>{
 
 //search books by name ,author or category
 router.get('/books/search', async(req,res)=>{
-    const data = {...req.body}
+    const title =req.query.title;
+    const author =req.query.author;
+    const category =req.query.category
+    
     try{
-        
+        const query ={};
+        if(title) query.title = new RegExp(title,'i');
+        if(author) query.author = new RegExp(author,'i');
+        if(category) query.category = new RegExp(category, 'i');
+
+        const book = await Book.find(query);
+        res.json(book);
+
     }catch (err){
         res.send('error' +err)
     }
