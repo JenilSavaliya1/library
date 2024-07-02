@@ -52,7 +52,7 @@ router.get('/books/search', async(req,res)=>{
         if(author) query.author = new RegExp(author,'i');
         if(category) query.category = new RegExp(category, 'i');
 
-        const book = await Book.find(query);
+        const book = await Books.find(query);
         res.json(book);
 
     }catch (err){
@@ -60,5 +60,20 @@ router.get('/books/search', async(req,res)=>{
     }
 })
 
+
+//histroy of books
+router.get('/books/history/:bookId', async (req, res) => {
+    const bookId = req.query.bookId;
+
+    try {
+        const book = await Books.findById(bookId);
+        if (!book) {
+            return res.status(404).send('Book not found');
+        }
+        res.json(book.history);
+    } catch (err) {
+        res.status(500).send('Error: ' + err);
+    }
+});
 
 module.exports = router
