@@ -22,7 +22,7 @@ const booksSchema = new mongoose.Schema({
             default: true
         },
         returnDate: {
-            type: Date 
+            type: String,
             
         },
         assignedTo: {

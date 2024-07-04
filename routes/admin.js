@@ -80,7 +80,7 @@ router.get('/books/delete', async (req, res, next) => {
     if (details) {
         return res.status(200).json({
             message: 'Data deleted successfuly'
-        });
+        })
     }
 })
 
@@ -145,6 +145,20 @@ router.get('/user', async (req, res) => {
 })
 
 //books to be returned today
+router.get('/books/dueToday', async(req,res)=>{
+    const today = new Date();
+    const todayISO = today.toISOString().split('T')[0];
 
+    try {
+        const booksDueToday = await Books.find({ 'status.returnDate': todayISO });
+        if (booksDueToday.length > 0) {
+            res.json(booksDueToday);
+        } else {
+            res.json({ message: 'No books are due today.' });
+        }
+    } catch (err) {
+        res.status(500).send('Error: ' + err);
+    }
+});
 
 module.exports = router
