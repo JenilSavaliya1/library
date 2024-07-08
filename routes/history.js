@@ -18,7 +18,23 @@ router.post('/', async (req, res) => {
 })
 
 //history of books
+router.get('/books/history', async (req, res) => {
 
+    try {
+
+        const bookID = req.query.id;
+        console.log(bookID);
+
+        const historyofbook = await History.find({ bookId: bookID })
+        if (historyofbook === 0) {
+            return res.status(404).send("no history found")
+        }
+
+        res.json(historyofbook)
+    } catch (err) {
+        res.status(500).send('Error' + err);
+    }
+});
 
 
 
