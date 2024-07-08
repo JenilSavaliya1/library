@@ -8,8 +8,7 @@ router.post('/', async (req, res) => {
     const user = new User({
         name: req.body.name,
         password: req.body.password,
-        book_borrowed: req.body.book_borrowed,
-        history: req.body.history
+        book_borrowed: req.body.book_borrowed
     })
 
     try {
@@ -58,26 +57,27 @@ router.get('/books/search', async (req, res) => {
     } catch (err) {
         res.send('error' + err)
     }
-})
+});
 
 
 //histroy of books
-router.get('/books/history', async (req, res) => {
+// router.get('/books/history', 
+//      async (req, res) => {
 
-    try {
+//     try {
 
-        const id = req.query.id;
-        console.log(id);
+//         const id = req.query.id;
+//         console.log(id);
 
-        const book = await Books.findById(id);
-        if (!book) {
-            return res.status(404).send('Book not found');
-        }
-        res.json(book);
+//         const book = await Books.findById(id);
+//         if (!book) {
+//             return res.status(404).send('Book not found');
+//         }
+//         res.json(book);
         
-    } catch (err) {
-        res.status(500).send('Error: ' + err);
-    }
-});
+//     } catch (err) {
+//         res.status(500).send('Error: ' + err);
+//     }
+// });
 
 module.exports = router

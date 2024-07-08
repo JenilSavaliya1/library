@@ -13,17 +13,17 @@ const userSchema = new mongoose.Schema({
     book_borrowed : {
         type :[String],
         required: true
-    },
-    history : {
-        book : {
-            type: [String],
-            required: true
-        },
-        returnDate : {
-            type: [Date],
-            required: true  
-        } 
     }
+    // history : {
+    //     book : {
+    //         type: [String],
+    //         required: true
+    //     },
+    //     returnDate : {
+    //         type: [Date],
+    //         required: true  
+    //     } 
+    // }
     
 })
 

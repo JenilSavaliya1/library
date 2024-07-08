@@ -7,7 +7,7 @@ router.post('/', async(req,res)=>{
         title: req.body.title,
         author: req.body.author,
         category: req.body.category,
-        status : req.body.status,
+        
 
     })
 
@@ -26,7 +26,7 @@ router.get('/', async(req,res)=> {
     }catch(err){
         res.send('error' + err)
     }
-})
+});
 
 
 module.exports = router

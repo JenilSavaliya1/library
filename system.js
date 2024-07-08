@@ -20,6 +20,9 @@ app.use('/books', booksRouter)
 const userRouter = require('./routes/user')
 app.use('/user', userRouter) 
 
+const historyRouter = require('./routes/history')
+app.use('/history', historyRouter)
+
 app.listen(9000, () =>{
     console.log('server started')
 })
