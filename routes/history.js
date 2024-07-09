@@ -26,20 +26,15 @@ router.get('/books/history', async (req, res) => {
         console.log(bookID);
 
         const historyofbook = await History.find({ bookId: bookID })
-        if (historyofbook === 0) {
+        if (historyofbook.length === 0) {
             return res.status(404).send("no history found")
         }
 
-        res.json(historyofbook)
+        return res.json(historyofbook)
     } catch (err) {
         res.status(500).send('Error' + err);
     }
 });
-
-
-
-
-
 
 
 module.exports = router
