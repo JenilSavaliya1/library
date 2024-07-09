@@ -29,19 +29,7 @@ const booksSchema = new mongoose.Schema({
         type: mongoose.Schema.Types.ObjectId, //assigned the user id to the book borrowed
         ref : user
         }
-    },
-    history: [{
-        userId: {
-            type: mongoose.Schema.Types.ObjectId,
-            ref: user
-        },
-        borrowedDate: {
-            type: Date
-        },
-        returnedDate: {
-            type: Date
-        }
-    }]
+    }
 })
 
 module.exports = mongoose.model('Books', booksSchema)

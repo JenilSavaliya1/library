@@ -1,4 +1,5 @@
 const express = require('express')
+const moment = require('moment')
 const router = express.Router()
 const Admin = require('../models/admin')
 const Books = require('../models/books')
@@ -107,14 +108,14 @@ router.post('/books/assign', async (req, res) => {
                 "status.returnDate": new Date(returnDate),
                 "status.assignedTo": userId
             },
-        //     $push: {
-        //         history: {
-        //             userId: userId,
-        //             borrowedDate: new Date(),
-        //             returnedDate: null //as it is returned and in the history so set it to null and updated as returned back
-        //         }
-        //     }
-             },
+            //     $push: {
+            //         history: {
+            //             userId: userId,
+            //             borrowedDate: new Date(),
+            //             returnedDate: null //as it is returned and in the history so set it to null and updated as returned back
+            //         }
+            //     }
+        },
             { new: true }
         );
 
@@ -145,22 +146,29 @@ router.get('/user', async (req, res) => {
 });
 
 //books to be returned today
-// router.get('/books/dueToday', async(req,res)=>{
-//     const today = new Date();
-//     const todayISO = today.toISOString().split('T')[0];
+router.get('/books/dueToday', async (req, res) => {
+    const today = moment().startOf('day');
+    const tomorrow = moment(today).add(1, 'day');
 
-//     try {
-//         moment module
-//         {exp: {$gte:start,$lt: end}}
-//         const booksDueToday = await Books.find({ 'status.returnDate': todayISO });
-//         if (booksDueToday.length > 0) {
-//             res.json(booksDueToday);
-//         } else {
-//             res.json({ message: 'No books are due today.' });
-//         }
-//     } catch (err) {
-//         res.status(500).send('Error: ' + err);
-//     }
-// });
+    try {
+        //{exp: {$gte:start,$lt: end}}
+        const booksDueToday = await Books.aggregate([{
+            $match: {
+                'status.returnDate': {
+                    $gte: today.toDate(),
+                    $lt: tomorrow.toDate()
+                }
+            }
+        }
+        ]);
+        if (booksDueToday.length > 0) {
+            res.json(booksDueToday);
+        } else {
+            res.json({ message: 'No books are due today.' });
+        }
+    } catch (err) {
+        res.status(500).send('Error: ' + err);
+    }
+});
 
 module.exports = router
