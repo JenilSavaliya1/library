@@ -111,13 +111,6 @@ router.post('/books/assign', async (req, res) => {
                 "status.returnDate": new Date(returnDate),
                 "status.assignedTo": userId
             },
-            //     $push: {
-            //         history: {
-            //             userId: userId,
-            //             borrowedDate: new Date(),
-            //             returnedDate: null //as it is returned and in the history so set it to null and updated as returned back
-            //         }
-            //     }
         },
             { new: true }
         );

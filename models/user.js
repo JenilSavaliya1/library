@@ -14,17 +14,6 @@ const userSchema = new mongoose.Schema({
         type :[String],
         required: true
     }
-    // history : {
-    //     book : {
-    //         type: [String],
-    //         required: true
-    //     },
-    //     returnDate : {
-    //         type: [Date],
-    //         required: true  
-    //     } 
-    // }
-    
 })
 
 module.exports = mongoose.model('User', userSchema)

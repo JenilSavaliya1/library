@@ -59,25 +59,4 @@ router.get('/books/search', async (req, res) => {
     }
 });
 
-
-//histroy of books
-// router.get('/books/history', 
-//      async (req, res) => {
-
-//     try {
-
-//         const id = req.query.id;
-//         console.log(id);
-
-//         const book = await Books.findById(id);
-//         if (!book) {
-//             return res.status(404).send('Book not found');
-//         }
-//         res.json(book);
-        
-//     } catch (err) {
-//         res.status(500).send('Error: ' + err);
-//     }
-// });
-
 module.exports = router
