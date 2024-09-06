@@ -1,9 +1,59 @@
-const express = require('express')
-const moment = require('moment')
-const router = express.Router()
-const Admin = require('../models/admin')
-const Books = require('../models/books')
-const User = require('../models/user')
+const express = require('express');
+const moment = require('moment');
+const router = express.Router();
+const Admin = require('../models/admin');
+const Books = require('../models/books');
+const User = require('../models/user');
+const bcrypt = require('bcrypt');
+const jwt = require('jsonwebtoken');
+
+//Secret key for JWT
+const JWT_SECRET = 'f!s@f#s$fs';
+
+//login route for admins
+router.post('/login',async(req,res)=>{
+    try{
+        const data =  {...req.body};
+
+        //finding admin using username
+        const admin = await Admin.findOne({username});
+        if(!admin){
+            return res.status(400).json({message: 'invalid username or password'});
+        }
+
+        //checking if the passowrd matches the passowrd inputed 
+        const isMatch = await bcrypt.compare(password, admin.password);
+        if(!isMatch) {
+            return res.status(400).json({message:' invalid username or password'});
+        }
+
+        // create and sign a JWT token
+        const token = jwt.sign({ id: admin.id }, JWT_SECRET, { algorithm: 'RS256', expiresIn: '1h' });
+
+        res.json({token});
+
+    }catch(err){
+        res.status(500).json({message: 'server error was occurred'});
+    }
+    
+});
+
+//veriy the token
+const verifyToken = (req,res, next) =>{
+    const token = req.header('authorization');
+
+    if(!token) {
+        return res.status(401).json({message: 'No token, authorization denied'});
+    }
+
+    try{
+        const decoded = jwt.verify(token, JWT_SECRET, { algorithms: ['RS256'] });
+        req.admin = decoded; // Attaching the decoded token data to the request object
+        next(); // Passing control to the next middleware or route handler
+    } catch (err) {
+        res.status(401).json({ message: 'Token is not valid' });
+    }
+};
 
 
 router.post('/', async (req, res) => {
@@ -19,8 +69,6 @@ router.post('/', async (req, res) => {
         res.send('error')
     }
 })
-
-//add login with jwt
 
 
 //Find all the admins in the database
@@ -102,7 +150,7 @@ router.post('/books/assign', async (req, res) => {
             return res.status(404).send('Book or user not found');
         }
         if (!book.status.avaiable) {
-            return res.status(400).send('Book is assigned to someone else');
+            return res.status(404).send('Book is assigned to someone else');
         }
 
         const assignedBook = await Books.findByIdAndUpdate(bookId, {
@@ -167,4 +215,5 @@ router.get('/books/dueToday', async (req, res) => {
     }
 });
 
-module.exports = router
+module.exports = router;
+module.exports = verifyToken;

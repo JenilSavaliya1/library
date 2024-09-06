@@ -23,11 +23,10 @@ router.get('/books/history', async (req, res) => {
     try {
 
         const bookID = req.query.id;
-        console.log(bookID);
-
+        
         const historyofbook = await History.find({ bookId: bookID })
         if (historyofbook.length === 0) {
-            return res.status(404).send("no history found")
+            return res.json({message: 'no history of the book found'})
         }
 
         return res.json(historyofbook)
